@@ -16,6 +16,15 @@ def paginate_questions(request, selection):
     current_question = questions[start:end]
     return current_question
 
+def check_if_one_none(list_of_elem):
+    """ Check if any of elements in list is None """
+    result = False
+    for elem in list_of_elem:
+        if elem is None or elem == "":
+            result=True
+            return result
+    return result
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
@@ -116,11 +125,6 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-
-
-
-
-
     '''
     @TODO: 
     Create an endpoint to POST a new question, 
@@ -132,6 +136,29 @@ def create_app(test_config=None):
     of the questions list in the "List" tab.  
     '''
 
+    @app.route('/questions', methods=['POST'])
+    def create_question():
+        # get data from front end
+        body = request.get_json()
+        new_question = body.get('question', None)
+        new_answer = body.get('answer', None)
+        new_category = body.get('category', None)
+        new_difficulty = body.get('difficulty',None)
+        list = [new_question, new_answer]
+        # Check if list contains only one element is None
+        result = check_if_one_none(list)
+        if (result):
+            abort(422)
+        try:
+            question = Question(question=new_question, answer=new_answer, category=new_category,difficulty=new_difficulty)
+            question.insert()
+            # return to view in json format
+            return jsonify({
+                'success': True,
+                'created': question.id
+            })
+        except:
+            abort(422)
     '''
     @TODO: 
     Create a POST endpoint to get questions based on a search term. 
@@ -142,6 +169,25 @@ def create_app(test_config=None):
     only question that include that string within their question. 
     Try using the word "title" to start. 
     '''
+    @app.route('/questions/search',methods=['POST'])
+    def search_questions():
+        body = request.get_json()
+        search_term = body.get('searchTerm',None)
+
+        if search_term:
+            search_result = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
+            total_search_result = len(search_result)
+            search_questions_result = [question.format() for question in search_result]
+            print('mahmoud', search_questions_result)
+            return jsonify({
+                "success":True,
+                "questions": search_questions_result,
+                "total_questions": total_search_result,
+                "current_category":None
+            })
+        else:
+            abort(404)
+
 
     '''
     @TODO: 
@@ -151,6 +197,22 @@ def create_app(test_config=None):
     categories in the left column will cause only questions of that 
     category to be shown. 
     '''
+    @app.route('/categories/<int:category_id>/questions')
+    def retrieve_questions_by_category(category_id):
+        try:
+            questions_by_category = Question.query.filter(Question.category == category_id).all()
+            questions_result = paginate_questions(request, questions_by_category)
+            # abort 404 if no questions found
+            if (len(questions_result) == 0):
+                abort(404)
+            return jsonify({
+                "success": True,
+                "questions": questions_result,
+                "total_questions": len(questions_result),
+                "current_category": category_id
+            })
+        except:
+            abort(404)
 
     '''
     @TODO: 
@@ -164,6 +226,31 @@ def create_app(test_config=None):
     and shown whether they were correct or not. 
     '''
 
+    @app.route('/quizzes', methods=['POST'])
+    def play_quiz():
+        try:
+            body = request.get_json()
+            quiz_category = body.get('quiz_category')
+            previous_questions = body.get('previous_questions')
+            # if user click on all category type : click
+            if quiz_category.get('type')=="click":
+                available_questions = Question.query.filter(
+                    Question.id.notin_(previous_questions)).all()
+            else: # if user click any one of categories will use filter on category type
+                available_questions = Question.query.filter(
+                    (Question.category==quiz_category.get('id')),(Question.id.notin_(previous_questions))).all()
+            if len(available_questions) > 0:
+                # get new random question using module random with method randrange
+                new_question = available_questions[random.randrange(0, len(available_questions))].format()
+            else:
+                new_question = None
+
+            return jsonify({
+                'success': True,
+                'question': new_question
+            })
+        except:
+            abort(422)
     '''
     @TODO: 
     Create error handlers for all expected errors 
