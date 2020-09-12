@@ -225,7 +225,6 @@ def create_app(test_config=None):
     one question at a time is displayed, the user is allowed to answer
     and shown whether they were correct or not. 
     '''
-
     @app.route('/quizzes', methods=['POST'])
     def play_quiz():
         try:
@@ -256,5 +255,28 @@ def create_app(test_config=None):
     Create error handlers for all expected errors 
     including 404 and 422. 
     '''
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({
+            "success":False,
+            "error":404,
+            "message": "Resource Not Found"
+        }),404
+
+    @app.errorhandler(422)
+    def unprocess_entity(error):
+        return jsonify({
+            "success":False,
+            "error": 422,
+            "message":"Unprocessable Entity"
+        }),422
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "status":False,
+            "error":400,
+            "message":"Bad Request"
+        }),400
 
     return app
