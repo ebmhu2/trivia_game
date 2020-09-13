@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from config import app_config
 import random
 
 from models import setup_db, Question, Category
@@ -25,9 +26,22 @@ def check_if_one_none(list_of_elem):
             return result
     return result
 
-def create_app(test_config=None):
+def create_app(config=None):
     # create and configure the app
-    app = Flask(__name__)
+    if config != None:
+        app = Flask(__name__, instance_relative_config=True)
+        app.config.from_object(app_config[config])
+        app.config.from_pyfile('config.py')
+    else:
+        raise EnvironmentError(
+            'Please specify a valid configuration profile for the application. Possible choices are `development`, `testing`, or `production`')
+    # initializing application extentions
+    # default value during development
+    """
+    If we don't have a way to add private files in production,
+     another option is to use environment variables. If the variable is set, it overrides the default.
+    """
+    app.secret_key=os.environ.get('SECRET_KEY', 'dev')
     setup_db(app)
 
     '''
