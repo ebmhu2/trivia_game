@@ -158,8 +158,9 @@ class QuestionView extends Component {
                             <li key={id} onClick={() => {
                                 this.getByCategory(id)
                             }}>
+                                 <img className="category" src={`${this.state.categories[id]}.svg`}/>
                                 {this.state.categories[id]}
-                                <img className="category" src={`${this.state.categories[id]}.svg`}/>
+
                             </li>
                         ))}
                     </ul>

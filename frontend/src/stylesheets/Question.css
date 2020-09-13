@@ -71,10 +71,13 @@ span.page-num.active {
 
 img.category {
     width: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
 img.delete {
     width: 20px;
+    cursor: pointer;
 }
 /* add star style for rating*/
 div.star {
@@ -92,4 +95,17 @@ div.star.active {
 
 .rating {
     display: flex;
+    cursor: pointer;
+}
+
+.page-num{
+    cursor: pointer;
+}
+
+.pagination-menu > .active{
+    cursor: default;
+}
+
+.play-category{
+    cursor: pointer;
 }
