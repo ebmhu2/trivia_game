@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from config import app_config
+from instance.config import app_config
 import random
 
 from models import setup_db, Question, Category
@@ -26,7 +26,7 @@ def check_if_one_none(list_of_elem):
             return result
     return result
 
-def create_app(config=None):
+def create_app(config='development'):
     # create and configure the app
     if config != None:
         app = Flask(__name__, instance_relative_config=True)
@@ -37,11 +37,8 @@ def create_app(config=None):
             'Please specify a valid configuration profile for the application. Possible choices are `development`, `testing`, or `production`')
     # initializing application extentions
     # default value during development
-    """
-    If we don't have a way to add private files in production,
-     another option is to use environment variables. If the variable is set, it overrides the default.
-    """
-    app.secret_key=os.environ.get('SECRET_KEY', 'dev')
+
+
     setup_db(app)
 
     '''
@@ -158,13 +155,14 @@ def create_app(config=None):
         new_answer = body.get('answer', None)
         new_category = body.get('category', None)
         new_difficulty = body.get('difficulty',None)
+        new_rating = body.get('rating',None)
         list = [new_question, new_answer]
         # Check if list contains only one element is None
         result = check_if_one_none(list)
         if (result):
             abort(422)
         try:
-            question = Question(question=new_question, answer=new_answer, category=new_category,difficulty=new_difficulty)
+            question = Question(question=new_question, answer=new_answer, category=new_category,difficulty=new_difficulty,rating=new_rating)
             question.insert()
             # return to view in json format
             return jsonify({
@@ -192,7 +190,6 @@ def create_app(config=None):
             search_result = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
             total_search_result = len(search_result)
             search_questions_result = [question.format() for question in search_result]
-            print('mahmoud', search_questions_result)
             return jsonify({
                 "success":True,
                 "questions": search_questions_result,
@@ -264,6 +261,27 @@ def create_app(config=None):
             })
         except:
             abort(422)
+
+    @app.route('/questions/<int:question_id>', methods=['PATCH'])
+    def update_question(question_id):
+        body = request.get_json()
+        try:
+            question = Question.query.filter(Question.id == question_id).one_or_none()
+            if question is None:
+                abort(404)
+
+            if 'rating' in body:
+                question.rating = int(body.get('rating'))
+
+            question.update()
+
+            return jsonify({
+                'success': True,
+            })
+
+        except:
+            abort(400)
+
     '''
     @TODO: 
     Create error handlers for all expected errors 

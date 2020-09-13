@@ -12,7 +12,10 @@ class Config(object):
     """
 
     # Put any configurations here that are common across all environments
-    SECRET_KEY = environ.get('SECRET_KEY','Hack_Me')
+    """
+      Secrets are stored as environment variables use default dev.
+    """
+    SECRET_KEY = environ.get('SECRET_KEY','dev')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
 
@@ -24,6 +27,7 @@ class DevelopmentConfig(Config):
     ENV = 'development'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URI')
+    print("mah1", SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_ECHO = True
 
 
