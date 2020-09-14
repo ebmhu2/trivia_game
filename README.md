@@ -578,7 +578,7 @@ The API will return four errors types when requests fail:
     - `quiz_category`: A dictionary that contains the category id and category type.
       - int:`id`: the category id to get the random question from.  
       - str:`type`: an optional value for the category type.  
-      Please note that this variable is provided only for convenience, and it will not have any effect on getting the question.
+    
 - Returns: An object with 2 keys: 
   - boolean indicate success value 
   - question list of objects that has the following data:
