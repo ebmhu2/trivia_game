@@ -27,7 +27,6 @@ class DevelopmentConfig(Config):
     ENV = 'development'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URI')
-    print("mah1", SQLALCHEMY_DATABASE_URI)
     SQLALCHEMY_ECHO = True
 
 

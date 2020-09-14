@@ -1,8 +1,7 @@
-import os
-from sqlalchemy import Column, String, Integer, create_engine
+# third-party imports
+from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
-import os
-import json
+
 
 db = SQLAlchemy()
 
@@ -42,6 +41,7 @@ class Question(db.Model):
         self.category = category
         self.difficulty = difficulty
         self.rating = rating
+
     def insert(self):
         db.session.add(self)
         db.session.commit()

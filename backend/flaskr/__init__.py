@@ -31,6 +31,7 @@ def check_if_one_none(list_of_elem):
 
 def create_app(config='development'):
     # create and configure the app
+    print(config)
     if config is not None:
         # load form config file in instance directory
         app = Flask(__name__, instance_relative_config=True)
@@ -59,10 +60,12 @@ def create_app(config='development'):
     def retrieve_categories():
         # handle GET requests for all available categories.
         categories = Category.query.order_by(Category.id).all()
-        current_categories = {}
+
         # add categories to current categories dictionaries
+        current_categories = {}
         for category in categories:
             current_categories[category.id] = category.type
+        total_categories = len(current_categories)
 
         # abort 404 if no categories found
         if len(current_categories) == 0:
@@ -72,7 +75,7 @@ def create_app(config='development'):
         return jsonify({
             'success': True,
             'categories': current_categories,
-            'total_categories': len(current_categories)
+            'total_categories': total_categories
         })
 
     @app.route('/questions')
@@ -116,12 +119,13 @@ def create_app(config='development'):
             question.delete()
             selection = Question.query.order_by(Question.id).all()
             current_questions = paginate_questions(selection)
+            total_questions = len(selection)
 
             return jsonify({
                 'success': True,
                 'deleted': question.id,
                 'questions': current_questions,
-                'total_questions': len(selection)
+                'total_questions': total_questions
             })
         except:
             abort(422)
@@ -279,6 +283,15 @@ def create_app(config='development'):
     Create error handlers for all expected errors 
     including 404 and 422. 
     '''
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            'success': False,
+            "error": 400,
+            "message": "Bad Request"
+        }), 400
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -302,5 +315,13 @@ def create_app(config='development'):
             "error": 400,
             "message": "Bad Request"
         }), 400
+
+    @app.errorhandler(405)
+    def not_allowed(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method Not Allowed"
+        }), 405
 
     return app
