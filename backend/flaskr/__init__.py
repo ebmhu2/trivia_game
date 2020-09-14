@@ -58,25 +58,28 @@ def create_app(config='development'):
 
     @app.route('/categories')
     def retrieve_categories():
-        # handle GET requests for all available categories.
-        categories = Category.query.order_by(Category.id).all()
+        try:
+            # handle GET requests for all available categories.
+            categories = Category.query.order_by(Category.id).all()
 
-        # add categories to current categories dictionaries
-        current_categories = {}
-        for category in categories:
-            current_categories[category.id] = category.type
-        total_categories = len(current_categories)
+            # add categories to current categories dictionaries
+            current_categories = {}
+            for category in categories:
+                current_categories[category.id] = category.type
+            total_categories = len(current_categories)
 
-        # abort 404 if no categories found
-        if len(current_categories) == 0:
-            abort(404)
+            # abort 404 if no categories found
+            if len(current_categories) == 0:
+                abort(405)
 
-        # return response to view
-        return jsonify({
-            'success': True,
-            'categories': current_categories,
-            'total_categories': total_categories
-        })
+            # return response to view
+            return jsonify({
+                'success': True,
+                'categories': current_categories,
+                'total_categories': total_categories
+            })
+        except:
+            abort(405)
 
     @app.route('/questions')
     def retrieve_questions():
@@ -256,7 +259,7 @@ def create_app(config='development'):
                 'question': new_question
             })
         except:
-            abort(422)
+            abort(400)
 
     @app.route('/questions/<int:question_id>', methods=['PATCH'])
     def update_question(question_id):
@@ -276,7 +279,7 @@ def create_app(config='development'):
             })
 
         except:
-            abort(400)
+            abort(404)
 
     '''
     @TODO: 
@@ -287,7 +290,7 @@ def create_app(config='development'):
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
-            'success': False,
+            "success": False,
             "error": 400,
             "message": "Bad Request"
         }), 400
@@ -308,13 +311,7 @@ def create_app(config='development'):
             "message": "Unprocessable Entity"
         }), 422
 
-    @app.errorhandler(400)
-    def bad_request(error):
-        return jsonify({
-            "status": False,
-            "error": 400,
-            "message": "Bad Request"
-        }), 400
+
 
     @app.errorhandler(405)
     def not_allowed(error):

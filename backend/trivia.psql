@@ -5,7 +5,7 @@
 -- Dumped from database version 12.3
 -- Dumped by pg_dump version 12.3
 
--- Started on 2020-09-14 04:00:16
+-- Started on 2020-09-14 08:57:26
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -143,11 +143,12 @@ COPY public.categories (id, type) FROM stdin;
 COPY public.questions (id, question, answer, difficulty, category, rating) FROM stdin;
 2	What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?	Tom Cruise	4	5	3
 1	What movie earned Tom Hanks his third straight Oscar nomination, in 1996?	Apollo 13	4	5	4
+22	The 1812 Overture was written to celebrate the defeat of Napoleon in which city?	Moscow	3	4	3
+23	Which country was once called Rhodesia?	Zimbabwe	3	4	4
 7	Which country won the first ever soccer World Cup in 1930?	Uruguay	4	6	3
 4	What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?	Edward Scissorhands	3	5	2
 5	What boxer's original name is Cassius Clay?	Muhammad Ali	1	4	3
 6	Which is the only team to play in every soccer World Cup tournament?	Brazil	3	6	5
-40	The 1812 Overture was written to celebrate the defeat of Napoleon in which city?	Moscow	3	4	3
 12	La Giaconda is better known as what?	Mona Lisa	3	2	4
 13	How many paintings did Van Gogh sell in his lifetime?	One	4	2	3
 14	Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?	Jackson Pollock	2	2	1
@@ -158,7 +159,6 @@ COPY public.questions (id, question, answer, difficulty, category, rating) FROM 
 19	Which South American country was named after the Italian city of Venice?	Venezuela	2	3	1
 20	Who scored Arsenal`s goal in the 2-1 defeat by Barcelona in the 2006 Champions League Final?	Sol Campbell	2	6	2
 21	With which sport would you associate Lance Armstrong?	Cycling	2	6	4
-41	Which country was once called Rhodesia?	Zimbabwe	3	4	4
 8	Who invented Peanut Butter?	George Washington Carver	2	4	4
 3	Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?	Maya Angelou	2	4	3
 9	What is the largest lake in Africa?	Lake Victoria	2	3	4
@@ -182,7 +182,7 @@ SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 -- Name: questions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mahmoud
 --
 
-SELECT pg_catalog.setval('public.questions_id_seq', 41, true);
+SELECT pg_catalog.setval('public.questions_id_seq', 23, true);
 
 
 --
@@ -212,7 +212,7 @@ ALTER TABLE ONLY public.questions
     ADD CONSTRAINT category FOREIGN KEY (category) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
 
--- Completed on 2020-09-14 04:00:16
+-- Completed on 2020-09-14 08:57:26
 
 --
 -- PostgreSQL database dump complete
