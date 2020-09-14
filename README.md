@@ -309,7 +309,7 @@ The API will return four errors types when requests fail:
 	-  URL queries: `id`: an  integer for a question id 
 - Returns: An object with 2 keys:
     - `deleted`:  deleted question  id
-    -  `success`: boolean indicate response status
+    -  `success`: boolean indicate success value
 - example: `curl -X DELETE http://localhost:5000/questions/16`
 ```
 {
@@ -568,7 +568,7 @@ The API will return four errors types when requests fail:
       - int:`id`: the category id to get the random question from.  
       - str:`type`: an optional value for the category type.  
       Please note that this variable is provided only for convenience, and it will not have any effect on getting the question.
-- returns: a question list of objects that has the following data:
+- returns: boolean indicate success value and question list of objects that has the following data:
   - int:`id`: An integer that contains the question ID.
   - str:`question`: A string that contains the question text.
   - str:`answer`: A string that contains the answer text.
