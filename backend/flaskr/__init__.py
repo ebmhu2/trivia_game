@@ -137,8 +137,6 @@ def create_app(config='development'):
             return jsonify({
                 'success': True,
                 'deleted': question.id,
-                'questions': current_questions,
-                'total_questions': total_questions
             })
         except:
             # abort unprocessable if there is problem in deleting question
@@ -169,11 +167,23 @@ def create_app(config='development'):
                                 difficulty=new_difficulty,
                                 rating=new_rating)
             question.insert()
-            # return to view in json format
+
+            # query the database for all questions
+            selection = Question.query.order_by(Question.id).all()
+            current_questions = paginate_questions(selection)
+            total_questions = len(selection)
+            if total_questions == 0:
+                # no questions were found, return a 404 error.
+                abort(404)
+
+            # return success response in json format to view
             return jsonify({
                 'success': True,
-                'created': question.id
-            })
+                'created': question.id,
+                'question': question.question,
+                'questions': current_questions,
+                'total_questions': total_questions})
+
         except:
             # abort unprocessable if exception
             abort(422)

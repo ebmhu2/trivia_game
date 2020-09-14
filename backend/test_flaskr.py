@@ -109,10 +109,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
-        # check that total_categories and categories return data
-        self.assertTrue(len(data['questions']))
-        self.assertTrue(data['total_questions'])
-
         # check if deleted question is not available after delete
         self.assertEqual(question, None)
 
@@ -144,6 +140,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
+        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['total_questions'])
 
         # check if created question is available after create
         self.assertNotEqual(question_created, None)
