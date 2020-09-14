@@ -569,15 +569,14 @@ The API will return four errors types when requests fail:
       - str:`type`: an optional value for the category type.  
       Please note that this variable is provided only for convenience, and it will not have any effect on getting the question.
 - returns: a question list of objects that has the following data:
-      - int:`id`: An integer that contains the question ID.
-      - str:`question`: A string that contains the question text.
-      - str:`answer`: A string that contains the answer text.
-      - int:`difficulty`: An integer that contains the difficulty.
-      - int:`rating`: An integer that contains question rating.
-      - int:`category`: An integer that contains the category ID.
-- Examples:
-  - request a random question with previous questions and the category "science":  
-  `curl -X POST http://localhost:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [8,18], "quiz_category": {"type": "History", "id": 4}}'`
+  - int:`id`: An integer that contains the question ID.
+  - str:`question`: A string that contains the question text.
+  - str:`answer`: A string that contains the answer text.
+  - int:`difficulty`: An integer that contains the difficulty.
+  - int:`rating`: An integer that contains question rating.
+  - int:`category`: An integer that contains the category ID.
+  - Examples: request a random question with previous questions and the category "science":  
+    `curl -X POST http://localhost:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [8,18], "quiz_category": {"type": "History", "id": 4}}'`
   
 Sample return:
 ```
