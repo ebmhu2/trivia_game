@@ -212,7 +212,6 @@ def create_app(config='development'):
                 "success": True,
                 "questions": search_questions_result,
                 "total_questions": total_search_result,
-                "current_category": None
             })
         # 404 if no results found
         else:
@@ -233,13 +232,20 @@ def create_app(config='development'):
             # abort 404 if no questions found
             if len(questions_result) == 0:
                 abort(404)
+            # get all available categories.
+            categories = Category.query.order_by(Category.id).all()
+
+            # add categories to current categories dictionaries
+            current_categories = {}
+            for category in categories:
+                current_categories[category.id] = category.type
 
             # return success response in json format to view
             return jsonify({
                 "success": True,
                 "questions": questions_result,
                 "total_questions": total_questions,
-                "current_category": category_id
+                "current_category": current_categories[category_id]
             })
 
         # 404 if no results found
@@ -316,6 +322,7 @@ def create_app(config='development'):
 
             # return success response in json format to view
             return jsonify({
+                'id': question_id,
                 'success': True,
             })
 

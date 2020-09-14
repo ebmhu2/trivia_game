@@ -12,7 +12,7 @@ This project is a game :game_die: where users can test their knowledge answering
 
 ## Getting Started
 
-### Installing Dependencies
+### Installing  Backend  Dependencies
 <img src="https://i.ibb.co/mFzB3Bf/python-logo-master-v3-TM.png" alt="python-logo-master-v3-TM" border="0" height=100>
  
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
@@ -39,7 +39,31 @@ This will install all of the required packages we selected within the `requireme
 
 - [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
 
-## Database Setup
+###  Setting up the environment variables
+Before running the project, you should set some environment variables, preferably in your ```.env``` file.
+Below are the environment variables for the project. You can put them in a `.env` file in the root of your virtual environment, or set the variables in the terminal as follows:
+```
+bash
+export FLASK_CONFIG=development
+```
+
+- `FLASK_CONFIG`: Specifies a configuration class for the app. possible choices are development, testing, or production. If not set, the app will run in the development environment by default.  
+E.G: `FLASK_CONFIG = 'development'`
+    - `development`: Start the app in the development environment. `FLASK_ENV` will be set to `development`. which detects file changes and restarts the server automatically.
+    - `testing`: Same as development, but with `testing` set to `True`. This helps in automated testing.
+    - `production`: Start the app in the production environment, with `FLASK_ENV` set to `production`, and `debug` and `testing` set to `False`.
+- `SECRET_KEY`: Set your secret_key which is your data's encryption key. This key should be random. Ideally, you shouldn't even know what it is.  
+E.g.: `SECRET_KEY = 'asogfkbir159hjrigjsq109487glrk54b2j5a'  
+If not set, `SECRET_KEY` will fall back to the string `dev`.
+- `DATABASE_URI` and `DATABASE_URI_TEST`: Set the database uri for SQLAlchemy for the different configuration classes  
+```
+# Production DB URI and development DB URI 
+DATABASE_URI = "postgres+psycopg2://mahmoud:post_Mah@localhost:5432/trivia"
+
+# testing DB URI
+DATABASE_URI_TEST = "postgres+psycopg2://mahmoud:post_Mah@localhost:5432/trivia_test"
+```
+### Database Setup
 <img src="https://i.ibb.co/QbztrVf/pngegg.png" alt="pngegg" border="0">
 With Postgres running, restore a database using the trivia.psql file provided.
 
@@ -58,7 +82,7 @@ psql trivia < trivia.psql
 ```cmd
 psql -U USERNAME trivia < trivia.psql
 ```
-## Running the server
+### Running the server
 
 From within the `backend` directory first ensure you are working using your created virtual environment.
 
@@ -74,7 +98,7 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
-## Front-End Dependencies
+### Front-End Dependencies
 #### Installing Node and NPM
 
 This project depends on Nodejs and Node Package Manager (NPM). Before continuing, you must download and install Node (the download includes NPM) from [https://nodejs.com/en/download](https://nodejs.org/en/download/).
@@ -87,9 +111,9 @@ This project uses NPM to manage software dependencies. NPM Relies on the package
 npm install
 ```
 
->_tip_: **npm i** is shorthand for **npm install**
+>_:bulb: tip_:  **npm i** is shorthand for **npm install**
 
-## Running the Frontend in Dev Mode
+### Running the Frontend in Dev Mode
 
 The frontend app was built using create-react-app. In order to run the app in development mode use ```npm start```. You can change the script in the ```package.json``` file. 
 
@@ -98,7 +122,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser. T
 ```bash
 npm start
 ```
-## Testing
+### Testing
 To run the tests, run
 ```
 dropdb trivia_test
@@ -129,7 +153,7 @@ Errors are returned as JSON in the following format:<br>
         "message": "resource not found"
     }
 
-The API will return three types of errors:
+The API will return four errors types when requests fail:
 
 * 400 – bad request
 * 404 – resource not found
@@ -145,7 +169,7 @@ The API will return three types of errors:
 - Returns: An object with 3 keys
     - `categories`: a dictionary that contains  `key: value` pairs `id: category_type`.
     - `total_categories`: an integer that contains total no of categories
-    - `success`: boolean indicate response status
+    - `success`: boolean indicate success value
 -   example:  `curl http://localhost:5000/categories`
 
        {
@@ -170,7 +194,7 @@ The API will return three types of errors:
         - `page`: an optional integer for a page number, which is used to fetch 10 questions per page
         - default: `1`
 - Returns: An object with 3 keys:
-    - `questions`: a list that contains paginated questions objects, that corresponding to the `page` query.
+    - list:`questions`: a list that contains paginated questions objects, that corresponding to the `page` query.
         - int:`id`: Question id.
         - str:`question`: Question text.
         - int:`difficulty`: Question difficulty.
@@ -178,9 +202,9 @@ The API will return three types of errors:
         - int:`rating`: question rating.
     - `categories`: a dictionary that contains objects of  key:value pairs 
     `id: category_type`.
-    - `total_questions`: an integer that contains total No of questions
-    - `success`: boolean indicate response status
-- example: `curl http://localhost:5000/questions`
+    - `total_questions`: an integer that contains total no of questions
+    - `success`: boolean indicate success value
+- Sample: `curl http://localhost:5000/questions`
 ```
 {
   "categories": {
@@ -279,7 +303,7 @@ The API will return three types of errors:
 ```
 
 
-####  DELETE `/questions/<int:id>`
+####  DELETE `/questions/<int:question_id>`
 - Deletes the question by the id specified in the URL parameters.
 - Request Arguments:
 	-  URL queries: `id`: an  integer for a question id 
@@ -294,229 +318,294 @@ The API will return three types of errors:
 }
 ```
 
-#### POST /questions
 
-This endpoint either creates a new question or returns search results.
+#### POST `/questions`
+- posts a new question.
+- Request Arguments:
+  - Json object:
+    - str:`question`: A string that contains the question text.
+    - str:`answer`: A string that contains the answer text.
+    - int:`difficulty`: An integer that contains the difficulty, `difficulty` can be from 1 to 5.
+    -  int:`rating`: An integer that contains rating, `rating` can be from 1 to 5.
+    - int:`category: An integer that contains the category id.
+- Returns: an object with the following keys:
+  - int:`created`: an integer that contains the ID for the created question.
+  - str:`question`: A string that contains the text for the created question.
+  - list:`questions`: a list that contains paginated questions objects.
+      - int:`id`: Question id.
+      - str:`question`: Question text.
+      - int:`difficulty`: Question difficulty.
+      - int:`rating`: Question rating.
+      - int:`category`: question category id.
+  - int:`total_questions`: an integer that contains total no of questions.
+  - boolean: `success`: boolean indicate success value
+- example: `curl http://localhost:5000/questions -X POST -H "Content-Type: application/json" -d '{ "question": "What is the only animal that cannot jump?", "answer": "Elephant", "difficulty": 3, "category": 1, "rating": 4}'`
+```
+{
+  "created": 24, 
+  "question": "What is the only animal that cannot jump?", 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 1, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 3, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Edward Scissorhands", 
+      "category": 5, 
+      "difficulty": 3, 
+      "id": 4, 
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?", 
+      "rating": 2
+    }, 
+    {
+      "answer": "Muhammad Ali", 
+      "category": 4, 
+      "difficulty": 1, 
+      "id": 5, 
+      "question": "What boxer's original name is Cassius Clay?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Brazil", 
+      "category": 6, 
+      "difficulty": 3, 
+      "id": 6, 
+      "question": "Which is the only team to play in every soccer World Cup tournament?", 
+      "rating": 5
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 7, 
+      "question": "Which country won the first ever soccer World Cup in 1930?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 8, 
+      "question": "Who invented Peanut Butter?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Lake Victoria", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 9, 
+      "question": "What is the largest lake in Africa?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Agra", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 10, 
+      "question": "The Taj Mahal is located in which Indian city?", 
+      "rating": 3
+    }
+  ], 
+  "success": true, 
+  "total_questions": 24
+}
 
-1. If <strong>no</strong> search term is included in request:
+```
+#### 4.3.5. POST `/questions/search`
+- search for a question.
+- Request Arguments:
+  - Json object:
+    - str:`searchTerm`: a string that contains the search term to search with.
+- returns: an object with the following:
+  - list:`questions`: a list that contains paginated questions objects  returned from the search.
+      - int:`id`: Question id.
+      - str:`question`: Question text.
+      - int:`difficulty`: Question difficulty..
+      - int:`rating`: Question rating.
+      - int:`category`: question category id.
+  - int:`total_questions`: an integer that contains total questions returned from the search.
+  - boolean: `success`: boolean indicate success value
+- example: `curl -X POST http://localhost:5000/questions/search -H "Content-Type: application/json" -d '{"searchTerm": "country"}'`
+```
+{
+  "questions": [
+    {
+      "answer": "Zimbabwe", 
+      "category": 4, 
+      "difficulty": 3, 
+      "id": 23, 
+      "question": "Which country was once called Rhodesia?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Uruguay", 
+      "category": 6, 
+      "difficulty": 4, 
+      "id": 7, 
+      "question": "Which country won the first ever soccer World Cup in 1930?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Venezuela", 
+      "category": 3, 
+      "difficulty": 2, 
+      "id": 19, 
+      "question": "Which South American country was named after the Italian city of Venice?", 
+      "rating": 1
+    }
+  ], 
+  "success": true, 
+  "total_questions": 3
+}
 
-* General:
-  * Creates a new question using JSON request parameters.
-  * Returns JSON object with newly created question, as well as paginated questions.
-* Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{
-            "question": "Which US state contains an area known as the Upper Penninsula?",
-            "answer": "Michigan",
-            "difficulty": 3,
-            "category": "3"
-        }'`<br>
+```
 
-        {
-            "created": 173, 
-            "question_created": "Which US state contains an area known as the Upper Penninsula?", 
-            "questions": [
-                {
-                    "answer": "Apollo 13", 
-                    "category": 5, 
-                    "difficulty": 4, 
-                    "id": 2, 
-                    "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-                }, 
-                {
-                    "answer": "Tom Cruise", 
-                    "category": 5, 
-                    "difficulty": 4, 
-                    "id": 4, 
-                    "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-                }, 
-                {
-                    "answer": "Muhammad Ali", 
-                    "category": 4, 
-                    "difficulty": 1, 
-                    "id": 9, 
-                    "question": "What boxer's original name is Cassius Clay?"
-                }, 
-                {
-                    "answer": "Brazil", 
-                    "category": 6, 
-                    "difficulty": 3, 
-                    "id": 10, 
-                    "question": "Which is the only team to play in every soccer World Cup tournament?"
-                }, 
-                {
-                    "answer": "Uruguay", 
-                    "category": 6, 
-                    "difficulty": 4, 
-                    "id": 11, 
-                    "question": "Which country won the first ever soccer World Cup in 1930?"
-                }, 
-                {
-                    "answer": "George Washington Carver", 
-                    "category": 4, 
-                    "difficulty": 2, 
-                    "id": 12, 
-                    "question": "Who invented Peanut Butter?"
-                }, 
-                {
-                    "answer": "Lake Victoria", 
-                    "category": 3, 
-                    "difficulty": 2, 
-                    "id": 13, 
-                    "question": "What is the largest lake in Africa?"
-                }, 
-                {
-                    "answer": "The Palace of Versailles", 
-                    "category": 3, 
-                    "difficulty": 3, 
-                    "id": 14, 
-                    "question": "In which royal palace would you find the Hall of Mirrors?"
-                }, 
-                {
-                    "answer": "Agra", 
-                    "category": 3, 
-                    "difficulty": 2, 
-                    "id": 15, 
-                    "question": "The Taj Mahal is located in which Indian city?"
-                }, 
-                {
-                    "answer": "Escher", 
-                    "category": 2, 
-                    "difficulty": 1, 
-                    "id": 16, 
-                    "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-                }
-            ], 
-            "success": true, 
-            "total_questions": 20
-        }
+#### 4.3.3. GET `/categories/<int:category_id>/questions`
+- Fetches a dictionary of paginated questions that are in the category specified in the URL parameters.
+- Request Arguments:
+	- -  URL queries: `id`: an  integer for a category_id 
+    - optional URL queries:
+        - `page`: an optional integer for a page number, which is used to fetch 10 questions per page.
+        - default: `1`
+- Returns: An object with 4 keys:
+    - str:`current_category`: a string that contains the category type for the selected category.
+    - list:`questions`: a list that contains paginated questions objects corresponding to the `page` query.
+        - int:`id`: Question id.
+        - str:`question`: Question text.
+        - int:`difficulty`: Question difficulty.
+        - - int:`rating`: Question rating.
+        - int:`category`: question category id.
+    - int:`total_questions`: an integer that contains total questions in the selected category.
+    - boolean: `success`: boolean indicate success value
+- example: `curl http://localhost:5000/categories/4/questions -H "Content-Type: application/json"`
+```
+{
+  "current_category": "History", 
+  "questions": [
+    {
+      "answer": "Moscow", 
+      "category": 4, 
+      "difficulty": 3, 
+      "id": 22, 
+      "question": "The 1812 Overture was written to celebrate the defeat of Napoleon in which city?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Zimbabwe", 
+      "category": 4, 
+      "difficulty": 3, 
+      "id": 23, 
+      "question": "Which country was once called Rhodesia?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Muhammad Ali", 
+      "category": 4, 
+      "difficulty": 1, 
+      "id": 5, 
+      "question": "What boxer's original name is Cassius Clay?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "Scarab", 
+      "category": 4, 
+      "difficulty": 4, 
+      "id": 18, 
+      "question": "Which dung beetle was worshipped by the ancient Egyptians?", 
+      "rating": 3
+    }, 
+    {
+      "answer": "George Washington Carver", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 8, 
+      "question": "Who invented Peanut Butter?", 
+      "rating": 4
+    }, 
+    {
+      "answer": "Maya Angelou", 
+      "category": 4, 
+      "difficulty": 2, 
+      "id": 3, 
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?", 
+      "rating": 3
+    }
+  ], 
+  "success": true, 
+  "total_questions": 6
+}
+
+```
 
 
-2. If search term <strong>is</strong> included in request:
+####  POST `/quizzes`
+- allows the user to play the quiz game, returning a random question that is not in the previous_questions list.
+- Request Arguments:
+  - Json object:
+    - `previous_questions`: A list that contains the IDs of the previous questions.
+    - `quiz_category`: A dictionary that contains the category id and category type.
+      - int:`id`: the category id to get the random question from.  
+      - str:`type`: an optional value for the category type.  
+      Please note that this variable is provided only for convenience, and it will not have any effect on getting the question.
+- returns: a question list of objects that has the following data:
+      - int:`id`: An integer that contains the question ID.
+      - str:`question`: A string that contains the question text.
+      - str:`answer`: A string that contains the answer text.
+      - int:`difficulty`: An integer that contains the difficulty.
+      - int:`rating`: An integer that contains question rating.
+      - int:`category`: An integer that contains the category ID.
+- Examples:
+  - request a random question with previous questions and the category "science":  
+  `curl -X POST http://localhost:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [8,18], "quiz_category": {"type": "History", "id": 4}}'`
+Sample return:
+```
+{
+  "question": {
+    "answer": "Muhammad Ali", 
+    "category": 4, 
+    "difficulty": 1, 
+    "id": 5, 
+    "question": "What boxer's original name is Cassius Clay?", 
+    "rating": 3
+  }, 
+  "success": true
+}
 
-* General:
-  * Searches for questions using search term in JSON request parameters.
-  * Returns JSON object with paginated matching questions.
-* Sample: `curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm": "which"}'`<br>
+```
+####  PATCH `/questions/<int:question_id>`
+- update the rating of the specified question by the id specified in the URL parameters.
+- Request Arguments:
+	-  URL queries: `id`: an  integer for a question id. 
+- Returns: An object with 2 keys:
+	- int:`id` :  question id that will be updated.
+    -  boolean:`success`:  indicate response status.
+- example: `curl -X PATCH http://localhost:5000/questions/10 -H "Content-Type: application/json" -d '{"rating": 4}'`
+```
+   {
+		"id": 10,
+		"success": true
+	}
+```
+## Deployment N/A
 
-        {
-            "questions": [
-                {
-                    "answer": "Brazil", 
-                    "category": 6, 
-                    "difficulty": 3, 
-                    "id": 10, 
-                    "question": "Which is the only team to play in every soccer World Cup tournament?"
-                }, 
-                {
-                    "answer": "Uruguay", 
-                    "category": 6, 
-                    "difficulty": 4, 
-                    "id": 11, 
-                    "question": "Which country won the first ever soccer World Cup in 1930?"
-                }, 
-                {
-                    "answer": "The Palace of Versailles", 
-                    "category": 3, 
-                    "difficulty": 3, 
-                    "id": 14, 
-                    "question": "In which royal palace would you find the Hall of Mirrors?"
-                }, 
-                {
-                    "answer": "Agra", 
-                    "category": 3, 
-                    "difficulty": 2, 
-                    "id": 15, 
-                    "question": "The Taj Mahal is located in which Indian city?"
-                }, 
-                {
-                    "answer": "Escher", 
-                    "category": 2, 
-                    "difficulty": 1, 
-                    "id": 16, 
-                    "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-                }, 
-                {
-                    "answer": "Jackson Pollock", 
-                    "category": 2, 
-                    "difficulty": 2, 
-                    "id": 19, 
-                    "question": "Which American artist was a pioneer of Abstract Expressionism, and a leading exponent of action painting?"
-                }, 
-                {
-                    "answer": "Scarab", 
-                    "category": 4, 
-                    "difficulty": 4, 
-                    "id": 23, 
-                    "question": "Which dung beetle was worshipped by the ancient Egyptians?"
-                }, 
-                {
-                    "answer": "Michigan", 
-                    "category": 3, 
-                    "difficulty": 3, 
-                    "id": 173, 
-                    "question": "Which US state contains an area known as the Upper Penninsula?"
-                }
-            ], 
-            "success": true, 
-            "total_questions": 18
-        }
 
-#### GET /categories/\<int:id\>/questions
-
-* General:
-  * Gets questions by category id using url parameters.
-  * Returns JSON object with paginated matching questions.
-* Sample: `curl http://127.0.0.1:5000/categories/1/questions`<br>
-
-        {
-            "current_category": "Science", 
-            "questions": [
-                {
-                    "answer": "The Liver", 
-                    "category": 1, 
-                    "difficulty": 4, 
-                    "id": 20, 
-                    "question": "What is the heaviest organ in the human body?"
-                }, 
-                {
-                    "answer": "Alexander Fleming", 
-                    "category": 1, 
-                    "difficulty": 3, 
-                    "id": 21, 
-                    "question": "Who discovered penicillin?"
-                }, 
-                {
-                    "answer": "Blood", 
-                    "category": 1, 
-                    "difficulty": 4, 
-                    "id": 22, 
-                    "question": "Hematology is a branch of medicine involving the study of what?"
-                }
-            ], 
-            "success": true, 
-            "total_questions": 18
-        }
-
-#### POST /quizzes
-
-* General:
-  * Allows users to play the quiz game.
-  * Uses JSON request parameters of category and previous questions.
-  * Returns JSON object with random question not among previous questions.
-* Sample: `curl http://127.0.0.1:5000/quizzes -X POST -H "Content-Type: application/json" -d '{"previous_questions": [20, 21],
-                                            "quiz_category": {"type": "Science", "id": "1"}}'`<br>
-
-        {
-            "question": {
-                "answer": "Blood", 
-                "category": 1, 
-                "difficulty": 4, 
-                "id": 22, 
-                "question": "Hematology is a branch of medicine involving the study of what?"
-            }, 
-            "success": true
-        }
-
-## Authors
-
-Alex Sandberg-Bernard authored the API (`__init__.py`), test suite (`test_flaskr.py`), and this README.<br>
-All other project files, including the models and frontend, were created by [Udacity](https://www.udacity.com/) as a project template for the [Full Stack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044).

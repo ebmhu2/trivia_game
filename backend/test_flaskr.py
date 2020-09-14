@@ -97,7 +97,7 @@ class TriviaTestCase(unittest.TestCase):
     def test_delete_question(self):
         """Tests question deletion success"""
 
-        question_id = 22
+        question_id = 21
 
         # get response and load data
         res = self.client().delete('/questions/{}'.format(question_id))
@@ -224,8 +224,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertNotEqual(len(data['questions']), 0)
 
         # check that current category returned is history
-        self.assertEqual(current_categories[
-                             data['current_category']], 'History')
+        self.assertEqual(data['current_category'], 'History')
 
     def test_404_if_retrieve_questions_by_category_fails(self):
         """Tests retrieve questions by category failure 404"""
