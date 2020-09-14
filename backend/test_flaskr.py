@@ -32,14 +32,13 @@ class TriviaTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
-    
+
     def tearDown(self):
         """Executed after reach test"""
         pass
 
     """
-    TODO
-    Write at least one test for each test for successful operation and for expected errors.
+    Tests
     """
     def test_retrieve_categories(self):
         """Tests categories retrieve success"""
@@ -52,7 +51,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
 
         # check that total_categories and categories return data
-        self.assertEqual(len(data['categories']),6)
+        self.assertEqual(len(data['categories']), 6)
         self.assertTrue(data['total_categories'])
 
     def test_405_if_no_categories_found(self):
@@ -103,7 +102,8 @@ class TriviaTestCase(unittest.TestCase):
         # get response and load data
         res = self.client().delete('/questions/{}'.format(question_id))
         data = json.loads(res.data)
-        question = Question.query.filter(Question.id == question_id).one_or_none()
+        question = Question.query.filter(
+            Question.id == question_id).one_or_none()
 
         # check status code and message
         self.assertEqual(res.status_code, 200)
@@ -137,7 +137,8 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         # get created question
-        question_created = Question.query.filter_by(id=data['created']).one_or_none()
+        question_created = Question.query.filter_by(
+            id=data['created']).one_or_none()
 
         # check status code and message
         self.assertEqual(res.status_code, 200)
@@ -151,19 +152,19 @@ class TriviaTestCase(unittest.TestCase):
         """Tests questions creation failure 405"""
 
         # get response and load data
-        res = self.client().post('/questions/45',json=self.new_question)
+        res = self.client().post('/questions/45', json=self.new_question)
         data = json.loads(res.data)
 
         # check status code and message
-        self.assertEqual(res.status_code,405)
-        self.assertEqual(data['success'],False)
-        self.assertTrue(data['message'],'Method Not Allowed')
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+        self.assertTrue(data['message'], 'Method Not Allowed')
 
     def test_422_if_question_creation_fails(self):
         """Tests questions creation failure 422"""
 
         # create new question without empty json data, then load response data
-        res = self.client().post('/questions',json={})
+        res = self.client().post('/questions', json={})
         data = json.loads(res.data)
 
         # check status code and message
@@ -175,7 +176,8 @@ class TriviaTestCase(unittest.TestCase):
         """Tests search questions success_with_result"""
 
         # get response and load data
-        res = self.client().post('/questions/search', json={'searchTerm': 'country'})
+        res = self.client().post('/questions/search',
+                                 json={'searchTerm': 'country'})
         data = json.loads(res.data)
 
         # check status code and message
@@ -191,7 +193,8 @@ class TriviaTestCase(unittest.TestCase):
         """Tests search questions success_without_result"""
 
         # get response and load data
-        res = self.client().post('/questions/search', json={'searchTerm': 'jack'})
+        res = self.client().post('/questions/search',
+                                 json={'searchTerm': 'jack'})
         data = json.loads(res.data)
 
         # check status code and message
@@ -223,7 +226,8 @@ class TriviaTestCase(unittest.TestCase):
         self.assertNotEqual(len(data['questions']), 0)
 
         # check that current category returned is history
-        self.assertEqual(current_categories[data['current_category']], 'History')
+        self.assertEqual(current_categories[
+                             data['current_category']], 'History')
 
     def test_404_if_retrieve_questions_by_category_fails(self):
         """Tests retrieve questions by category failure 404"""
@@ -247,8 +251,9 @@ class TriviaTestCase(unittest.TestCase):
         # All questions in History Category are [3,5,8,18,22,23]
         # previous_questions selected are [8,18]
         # next question Expected to be one from [3,5,22,23]
-        response = self.client().post('/quizzes', json={'previous_questions': [8, 18],
-                                                        'quiz_category': {'type': 'History', 'id': 4}})
+        json_dict = {'previous_questions': [8, 18],
+                     'quiz_category': {'type': 'History', 'id': 4}}
+        response = self.client().post('/quizzes', json=json_dict)
 
         # load response data
         data = json.loads(response.data)
@@ -286,7 +291,8 @@ class TriviaTestCase(unittest.TestCase):
         """Tests update question rating success"""
 
         # send patch request with json data rating 4
-        res=self.client().patch('/questions/5', json={'rating': 4})
+        json_dict = {'rating': 4}
+        res=self.client().patch('/questions/5', json=json_dict)
 
         # load response data
         data = json.loads(res.data)
@@ -303,15 +309,16 @@ class TriviaTestCase(unittest.TestCase):
     def test_404_for_failed_question_rating_update(self):
         """Tests update question rating failure 404"""
         # send patch request with json data rating 3
-        res = self.client().patch('/questions/100', json = {'rating': 3})
+        res = self.client().patch('/questions/100', json={'rating': 3})
 
         # load response data
         data = json.loads(res.data)
 
         # check response status code and message
         self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'],False)
-        self.assertEqual(data['message'],'Resource Not Found')
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource Not Found')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
