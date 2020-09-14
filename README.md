@@ -164,14 +164,15 @@ The API will return four errors types when requests fail:
 
 #### GET  `/categories`
 
--  Fetches a dictionary of categories in which the keys are the ids and the value is the 			 corresponding type of the category.
--  	Request Arguments: None
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding type of the category.
+- Request Arguments: None
 - Returns: An object with 3 keys
     - `categories`: a dictionary that contains  `key: value` pairs `id: category_type`.
     - `total_categories`: an integer that contains total no of categories
     - `success`: boolean indicate success value
--   example:  `curl http://localhost:5000/categories`
-
+- Example:  `curl http://localhost:5000/categories`
+- Sample Return:
+```
        {
 		  "categories": {
 		    "1": "Science",
@@ -185,7 +186,7 @@ The API will return four errors types when requests fail:
 		  "total_categories": 6
 		}
 
-
+```
 
 ####  GET  `/questions`
 - Fetches a dictionary of paginated questions, as well as a list of category dictionaries, in which the keys are the category ids and the values are the corresponding category types.
@@ -205,6 +206,8 @@ The API will return four errors types when requests fail:
     - `total_questions`: an integer that contains total no of questions
     - `success`: boolean indicate success value
 - Sample: `curl http://localhost:5000/questions`
+- Sample Return:
+
 ```
 {
   "categories": {
@@ -311,6 +314,8 @@ The API will return four errors types when requests fail:
     - `deleted`:  deleted question  id
     -  `success`: boolean indicate success value
 - example: `curl -X DELETE http://localhost:5000/questions/16`
+- Sample Return:
+
 ```
 {
     "deleted": 16, 
@@ -340,6 +345,7 @@ The API will return four errors types when requests fail:
   - int:`total_questions`: an integer that contains total no of questions.
   - boolean: `success`: boolean indicate success value
 - example: `curl http://localhost:5000/questions -X POST -H "Content-Type: application/json" -d '{ "question": "What is the only animal that cannot jump?", "answer": "Elephant", "difficulty": 3, "category": 1, "rating": 4}'`
+- Sample Return: 
 ```
 {
   "created": 24, 
@@ -446,6 +452,7 @@ The API will return four errors types when requests fail:
   - int:`total_questions`: an integer that contains total questions returned from the search.
   - boolean: `success`: boolean indicate success value
 - example: `curl -X POST http://localhost:5000/questions/search -H "Content-Type: application/json" -d '{"searchTerm": "country"}'`
+- Sample Retun:
 ```
 {
   "questions": [
@@ -498,7 +505,7 @@ The API will return four errors types when requests fail:
     - int:`total_questions`: an integer that contains total questions in the selected category.
     - boolean: `success`: boolean indicate success value
 - example: `curl http://localhost:5000/categories/4/questions -H "Content-Type: application/json"`
-
+- Sample Return:
 ```
 {
   "current_category": "History", 
@@ -580,7 +587,7 @@ The API will return four errors types when requests fail:
  - Examples: request a random question with previous questions and the category "science":  
     `curl -X POST http://localhost:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [8,18], "quiz_category": {"type": "History", "id": 4}}'`
   
-Sample return:
+ - Sample return:
 ```
 {
   "question": {
@@ -603,6 +610,7 @@ Sample return:
 	- int:`id` :  question id that will be updated.
     -  boolean:`success`:  indicate response status.
 - example: `curl -X PATCH http://localhost:5000/questions/10 -H "Content-Type: application/json" -d '{"rating": 4}'`
+- Sample Return:
 ```
    {
 		"id": 10,
