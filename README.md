@@ -332,14 +332,15 @@ The API will return four errors types when requests fail:
     - str:`question`: A string that contains the question text.
     - str:`answer`: A string that contains the answer text.
     - int:`difficulty`: An integer that contains the difficulty, `difficulty` can be from 1 to 5.
-    -  int:`rating`: An integer that contains rating, `rating` can be from 1 to 5.
-    - int:`category: An integer that contains the category id.
+    - int:`rating`: An integer that contains rating, `rating` can be from 1 to 5.
+    - int:`category`: An integer that contains the category id.
 - Returns: an object with the following keys:
   - int:`created`: an integer that contains the ID for the created question.
   - str:`question`: A string that contains the text for the created question.
   - list:`questions`: a list that contains paginated questions objects.
       - int:`id`: Question id.
       - str:`question`: Question text.
+      - str:`answer`: A string that contains the answer text.
       - int:`difficulty`: Question difficulty.
       - int:`rating`: Question rating.
       - int:`category`: question category id.
