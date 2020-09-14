@@ -14,7 +14,9 @@ setup_db(app)
 
 def setup_db(app):
     db.app = app
+    # initializing application extentions
     db.init_app(app)
+    # create all tables in the database
     db.create_all()
 
 
