@@ -431,7 +431,7 @@ The API will return four errors types when requests fail:
 }
 
 ```
-#### 4.3.5. POST `/questions/search`
+#### POST `/questions/search`
 - search for a question.
 - Request Arguments:
   - Json object:
@@ -480,7 +480,7 @@ The API will return four errors types when requests fail:
 
 ```
 
-#### 4.3.3. GET `/categories/<int:category_id>/questions`
+#### GET `/categories/<int:category_id>/questions`
 - Fetches a dictionary of paginated questions that are in the category specified in the URL parameters.
 - Request Arguments:
 	- -  URL queries: `id`: an  integer for a category_id 
@@ -592,7 +592,7 @@ Sample return:
 }
 
 ```
-####  PATCH `/questions/<int:question_id>`
+#### PATCH `/questions/<int:question_id>`
 - update the rating of the specified question by the id specified in the URL parameters.
 - Request Arguments:
 	-  URL queries: `id`: an  integer for a question id. 
