@@ -198,6 +198,7 @@ The API will return four errors types when requests fail:
     - list:`questions`: a list that contains paginated questions objects, that corresponding to the `page` query.
         - int:`id`: Question id.
         - str:`question`: Question text.
+	- str: `answer`: Answer text
         - int:`difficulty`: Question difficulty.
         - int:`category`: question category id.
         - int:`rating`: question rating.
