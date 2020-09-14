@@ -41,7 +41,9 @@ This will install all of the required packages we selected within the `requireme
 
 ###  Setting up the environment variables
 Before running the project, you should set some environment variables, preferably in your ```.env``` file.
-Below are the environment variables for the project. You can put them in a `.env` file in the root of your virtual environment, or set the variables in the terminal as follows:
+Below are the environment variables for the project. You can put them in a `.env` file in the root of your virtual environment
+in this project .env file and config.py in instance folder.  
+, or set the variables in the terminal as follows:
 ```
 bash
 export FLASK_CONFIG=development
