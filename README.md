@@ -498,6 +498,7 @@ The API will return four errors types when requests fail:
     - int:`total_questions`: an integer that contains total questions in the selected category.
     - boolean: `success`: boolean indicate success value
 - example: `curl http://localhost:5000/categories/4/questions -H "Content-Type: application/json"`
+
 ```
 {
   "current_category": "History", 
@@ -577,6 +578,7 @@ The API will return four errors types when requests fail:
 - Examples:
   - request a random question with previous questions and the category "science":  
   `curl -X POST http://localhost:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [8,18], "quiz_category": {"type": "History", "id": 4}}'`
+  
 Sample return:
 ```
 {
