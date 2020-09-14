@@ -35,7 +35,7 @@ class Question(db.Model):
     difficulty = Column(Integer)
     rating = Column(Integer)
 
-    def __init__(self, question, answer, category, difficulty,rating):
+    def __init__(self, question, answer, category, difficulty, rating):
         self.question = question
         self.answer = answer
         self.category = category

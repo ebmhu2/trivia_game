@@ -3,8 +3,10 @@
 from os import environ, path
 from dotenv import load_dotenv
 basedir = path.abspath(path.dirname(__file__))
+
 # load environment variables file
 load_dotenv(path.join(basedir, '.env'))
+
 
 class Config(object):
     """
@@ -13,9 +15,9 @@ class Config(object):
 
     # Put any configurations here that are common across all environments
     """
-      Secrets are stored as environment variables use default dev.
+        Secrets are stored as environment variables use default dev.
     """
-    SECRET_KEY = environ.get('SECRET_KEY','dev')
+    SECRET_KEY = environ.get('SECRET_KEY', 'dev')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
 
@@ -53,4 +55,3 @@ app_config = {
     'production': ProductionConfig,
     'testing': TestingConfig
 }
-
