@@ -50,7 +50,7 @@ source venv/bin/activate
 Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
 
 ```bash
-pip3.7 install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 This will install all of the required packages we selected within the `requirements.txt` file.
@@ -158,7 +158,7 @@ To run the tests, run
 dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
-python3.7 test_flaskr.py
+python test_flaskr.py
 ```
 - in windows you need to use database role
 ```cmd
