@@ -4,8 +4,8 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 # local imports
-from backend.flaskr import create_app
-from backend.models import setup_db, Question, Category
+from flaskr import create_app
+from models import setup_db, Question, Category
 
 
 class TriviaTestCase(unittest.TestCase):
