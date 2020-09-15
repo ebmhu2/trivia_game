@@ -155,6 +155,7 @@ createdb trivia_test
 psql trivia_test < trivia.psql
 python3.7 test_flaskr.py
 ```
+>_:bulb: tip_:  use `python3.7 test_flaskr.py`  in stead of python 
 - in windows you need to use database role
 ```cmd
 psql -U USERNAME trivia_test < trivia.psql
