@@ -26,9 +26,14 @@ sudo apt-get install python3.7
 #### Virtual Enviornment
 
 We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
-
+install virtual enviroment
 ```
 sudo apt-get install python3.7-venv
+```
+create virtual enviroment for project in backend folder.
+
+```
+python3.7 -m venv venv
 ```
 
 #### PIP Dependencies
@@ -144,7 +149,7 @@ To run the tests, run
 dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
-python test_flaskr.py
+python3.7 test_flaskr.py
 ```
 - in windows you need to use database role
 ```cmd
