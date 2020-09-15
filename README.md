@@ -17,16 +17,26 @@ This project is a game :game_die: where users can test their knowledge answering
  
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
+>_:bulb: tip_: Backend  Dependencies work on python 3.7, install **python version 3.7** by run the following code on linux or wsl on windows
+
+```
+sudo apt-get install python3.7
+```
+
 #### Virtual Enviornment
 
 We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+```
+sudo apt-get install python3.7-venv
+```
 
 #### PIP Dependencies
 
 Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
 
 ```bash
-pip install -r requirements.txt
+pip3.7 install -r requirements.txt
 ```
 
 This will install all of the required packages we selected within the `requirements.txt` file.
@@ -42,7 +52,7 @@ This will install all of the required packages we selected within the `requireme
 ###  Setting up the environment variables
 Before running the project, you should set some environment variables, preferably in your ```.env``` file.
 Below are the environment variables for the project. You can put them in a `.env` file in the root of your virtual environment,
->_:bulb: tip_: in this project .env file and config.py in instance folder.
+>_:bulb: tip_: in this project .env file and config.py in instance folder and in backend folder.
 
 or set the variables in the terminal as follows:
 ```
@@ -59,12 +69,15 @@ E.G: `FLASK_CONFIG = 'development'`
 E.g.: `SECRET_KEY = 'asogfkbir159hjrigjsq109487glrk54b2j5a'  
 If not set, `SECRET_KEY` will fall back to the string `dev`.
 - `DATABASE_URI` and `DATABASE_URI_TEST`: Set the database uri for SQLAlchemy for the different configuration classes  
+
+>_:bulb: tip_: Edit  `DATABASE_URI` and `DATABASE_URI_TEST` in .env file with database configuration
+
 ```
 # Production DB URI and development DB URI 
-DATABASE_URI = "postgres+psycopg2://mahmoud:post_Mah@localhost:5432/trivia"
+DATABASE_URI = "postgres+psycopg2://username:password@localhost:5432/trivia"
 
 # testing DB URI
-DATABASE_URI_TEST = "postgres+psycopg2://mahmoud:post_Mah@localhost:5432/trivia_test"
+DATABASE_URI_TEST = "postgres+psycopg2://username:password@localhost:5432/trivia_test"
 ```
 ### Database Setup
 <img src="https://i.ibb.co/QbztrVf/pngegg.png" alt="pngegg" border="0">
