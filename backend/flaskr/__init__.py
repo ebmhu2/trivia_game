@@ -4,8 +4,8 @@ from flask_cors import CORS
 import random
 
 # local imports
-from backend.instance.config import app_config
-from backend.models import setup_db, Question, Category
+from config import app_config
+from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
@@ -33,8 +33,8 @@ def check_if_one_none(list_of_elem):
 def create_app(config='development'):
     # create and configure the app
     if config is not None:
-        # load form config file in instance directory
-        app = Flask(__name__, instance_relative_config=True)
+        # load form config file.
+        app = Flask(__name__)
         app.config.from_object(app_config[config])
         app.config.from_pyfile('config.py')
     else:
