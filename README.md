@@ -68,11 +68,6 @@ Before running the project, you should set some environment variables, preferabl
 Below are the environment variables for the project. You can put them in a `.env` file in the root of your virtual environment,
 >_:bulb: tip_: in this project .env file and config.py in instance folder and in backend folder.
 
-or set the variables in the terminal as follows:
-```
-bash
-export FLASK_CONFIG=development
-```
 
 - `FLASK_CONFIG`: Specifies a configuration class for the app. possible choices are development, testing, or production. If not set, the app will run in the development environment by default.  
 E.G: `FLASK_CONFIG = 'development'`
