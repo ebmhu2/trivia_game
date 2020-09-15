@@ -36,7 +36,6 @@ def create_app(config='development'):
         # load form config file.
         app = Flask(__name__)
         app.config.from_object(app_config[config])
-        app.config.from_pyfile('config.py')
     else:
         raise EnvironmentError(
             'Please specify a valid configuration profile for the application.'
