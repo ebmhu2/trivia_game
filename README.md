@@ -34,7 +34,16 @@ create virtual enviroment for project in backend folder.
 
 ```
 python3.7 -m venv venv
+
 ```
+
+Activate virtual enviroment for project.
+
+```
+source venv/bin/activate
+
+```
+
 
 #### PIP Dependencies
 
